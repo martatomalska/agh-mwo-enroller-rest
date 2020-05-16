@@ -29,10 +29,29 @@ public class MeetingService {
 		return (Meeting) session.get(Meeting.class, id);
 	}
 
+	public Meeting findByTitle(String title) {
+		return (Meeting) session.get(Meeting.class, title);
+	}
+
 	public Meeting add(Meeting meeting) {
 		Transaction transaction = this.session.beginTransaction();
 		session.save(meeting);
 		transaction.commit();
 		return meeting;
 	}
+
+	public Meeting update(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		session.update(meeting);
+		transaction.commit();
+		return meeting;
+	}
+
+	public void delete(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		session.delete(meeting);
+		transaction.commit();
+	}
+
+
 }
