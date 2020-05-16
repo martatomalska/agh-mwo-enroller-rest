@@ -100,4 +100,20 @@ public class MeetingRestController {
         meetingService.update(foundMeeting);
         return new ResponseEntity<Meeting>(foundMeeting, HttpStatus.OK);
     }
+
+    @RequestMapping(value ="/{id}/participants", method = RequestMethod.DELETE)
+    public ResponseEntity<?> removeParticipantFromMeeting(@PathVariable("id") long id, @RequestBody Participant participant) {
+        Meeting foundMeeting = meetingService.findById(id);
+        if (foundMeeting == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Participant foundParticipant = participantService.findByLogin(participant.getLogin());
+        if (foundParticipant == null) {
+            return new ResponseEntity("Participant " + participant + " not found", HttpStatus.NOT_FOUND);
+        }
+        foundMeeting.removeParticipant(foundParticipant);
+        meetingService.update(foundMeeting);
+        return new ResponseEntity("Participant " + foundParticipant + " removed from meeting with an id " + foundMeeting, HttpStatus.OK);
+
+    }
 }
